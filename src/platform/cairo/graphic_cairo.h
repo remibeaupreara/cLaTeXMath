@@ -1,7 +1,5 @@
 #include "config.h"
 
-#if defined(BUILD_GTK) && !defined(MEM_CHECK)
-
 #ifndef GRAPHIC_CAIRO_H_INCLUDED
 #define GRAPHIC_CAIRO_H_INCLUDED
 
@@ -130,4 +128,3 @@ public:
 }  // namespace tex
 
 #endif  // GRAPHIC_CAIRO_H_INCLUDED
-#endif  // BUILD_GTK && !MEM_CHECK
