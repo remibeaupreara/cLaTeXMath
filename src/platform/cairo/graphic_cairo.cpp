@@ -6,6 +6,34 @@
 
 #include <fontconfig/fontconfig.h>
 
+#ifdef WIN32
+
+#include <direct.h>
+#include <windows.h>
+#include <shlobj.h>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+
+#else
+
+#include <unistd.h>
+#include <cstring>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <dirent.h>
+#include <thread>
+#include <fcntl.h>
+#include <netdb.h>
+#include <ifaddrs.h>
+
+#endif
+
+#ifdef __APPLE__
+#include <libproc.h>
+#endif
+
 using namespace tex;
 using namespace std;
 
@@ -17,6 +45,28 @@ Font_cairo::Font_cairo(const string& family, int style, float size)
 
 Font_cairo::Font_cairo(const string& file, float size) : Font_cairo("", PLAIN, size) {
   loadFont(file);
+}
+
+
+std::string getExecutable()
+{
+    char buf[4096];
+
+#ifdef WIN32
+    int32_t result = GetModuleFileNameA(nullptr, &buf[0], sizeof(buf));
+#elif __APPLE__
+    int pid = getpid();
+    int result = proc_pidpath (pid, buf, sizeof(buf));
+#else
+    int32_t result = readlink("/proc/self/exe", buf, sizeof(buf));
+#endif
+
+    return std::string(buf, result);
+}
+
+std::string getDirectory(std::string fileName)
+{
+    return fileName.substr(0, fileName.find_last_of("/\\"));
 }
 
 void Font_cairo::loadFont(const string& file) {
@@ -33,7 +83,8 @@ void Font_cairo::loadFont(const string& file) {
   }
 
   // query font via fontconfig
-  const FcChar8* f = (const FcChar8*)file.c_str();
+  std::string s = getDirectory(getExecutable()) + "/" + file;
+  const FcChar8* f = (const FcChar8*)s.c_str();
 
   // get font family from file first
   int count;

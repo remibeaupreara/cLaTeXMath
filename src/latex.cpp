@@ -46,7 +46,7 @@ string LaTeX::queryResourceLocation(string& custom_path) {
 		delete userdata_fallback;
 	}
 	paths.push("/usr/share/clatexmath/");
-	paths.push("/usr/local/share/clatexmath/");
+    paths.push("/usr/local/share/clatexmath/");
 #endif
 	// goes through the list of potential paths. if it finds a path that contains .clatexmath-res_root, it returns it. Otherwise return an empty string.
 	while (!paths.empty()) {
