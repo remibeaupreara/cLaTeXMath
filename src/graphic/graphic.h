@@ -73,6 +73,9 @@ public:
  */
 class TextLayout {
 public:
+
+    virtual ~TextLayout() = default;
+
   /**
    * Get the layout bounds with current text and font
    *
@@ -115,6 +118,7 @@ public:
  */
 class Graphics2D {
 public:
+    virtual ~Graphics2D() = default;
   /**
    * Set the color of the context
    * 
