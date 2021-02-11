@@ -3,11 +3,12 @@
 #if defined(BUILD_WIN32) && !defined(MEM_CHECK)
 
 #include "platform/gdi_win/graphic_win32.h"
-
 #include <sstream>
 
-#include <gdiplus.h>
 #include <windows.h>
+typedef ULONG PROPID;
+
+#include <gdiplus.h>
 
 using namespace std;
 using namespace tex;
